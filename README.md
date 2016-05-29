@@ -14,6 +14,8 @@ At junior level - you can be overwhelmed a little bit with this README and tasks
 not try. And I think that if you're smart guy or lady - you really can resolve all this - including the learing 
 of how to make git pull request in the given time;
 
+(this QR code on img is meaningless - really ;) )
+
 # RULES
 
 1. Task can be found in the tasks/tasks.py file.
