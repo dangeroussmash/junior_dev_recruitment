@@ -1,6 +1,6 @@
 # I wanna play a game
 
-![I wanna play a game][img/iwannaplayagame.jpg]
+![I wanna play a game]('img/iwannaplayagame.jpg')
 
 # INFO
 
