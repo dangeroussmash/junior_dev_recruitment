@@ -28,7 +28,7 @@ of how to make git pull request in the given time;
  
 # WHAT NEXT?
 
-1. Until next sunday evening - the this README will be updated with junior dev ranking.
+1. Until next sunday evening - this README will be updated with junior dev ranking.
 2. The most 3-4 will be asked to make a call or meeting with me. 
 
 ### Enjoy. Happy coding.
