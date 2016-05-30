@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Hello! Good luck!
 
 ##############
@@ -58,7 +57,7 @@ class Ticket(object):
 
 # SUBTASK 4
 # Propose a structure where client instance will have some interface to get the
-# all ticket ids - whenever added, wich returns all ticket ids;
+# all ticket ids - whenever added, which returns all ticket ids;
 # EXAMPLE (it's just an example, remember - "some interface" - be creative):
 # c = Client(...)
 # t = Ticket('12345678', client=c, ...)
