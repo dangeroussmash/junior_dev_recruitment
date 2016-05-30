@@ -25,7 +25,7 @@ class Ticket(object):
         self.event_name = event_name
         self.client = client
         self.room_number = room_number
-        self.client.tickets.append(self)
+        self.client.tickets.append(self.ticket_id)
 
     def get_ticket_data(self):
         return json.dumps(
@@ -67,7 +67,7 @@ class Client(object):
 
     def get_all_tickets_by_ids(self):
         """Return all associated tickets ids."""
-        return [ticket.ticket_id for ticket in self.tickets]
+        return [ticket for ticket in self.tickets]
 
 # Examples:
 import random
