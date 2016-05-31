@@ -11,7 +11,7 @@ twenty five of you. So I need to put minimum effort in this recruitment process.
 application on the first (CV) level.
 
 At junior level - you can be overwhelmed a little bit with this README and tasks :) But do not worry - Just do, there's 
-not try. And I think that if you're smart guy or lady - you really can resolve all this - including the learing 
+no try. And I think that if you're smart guy or lady - you really can resolve all this - including the learing 
 of how to make git pull request in the given time;
 
 (this QR code on img is meaningless - really ;) )
