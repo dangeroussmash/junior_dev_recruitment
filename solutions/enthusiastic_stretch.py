@@ -74,10 +74,10 @@ class Client(object):
     def my_tickets(self, key='ticket_id'):
         allowed_keys = ['ticket_id', 'event_name', 'event_date', 'event_time', 'room_number']
         if key in allowed_keys:  # checks if given key is ticket's attribute
-            sort_list = sorted(self.tickets, key=itemgetter(key))
+            sort_list = sorted(self.tickets, key=itemgetter(key))  # creates a list sorted by value of a given key
             newlist = []
             for i in sort_list:
-                newlist.append(i.get('ticket_id'))
+                newlist.append(i.get('ticket_id'))  # output list contains only ticket_id value
             return 'Ticket IDs ordered by %s : %s. \nList of available keys: %s' % (key, newlist, allowed_keys)
         else:
             raise ValueError('Key not allowed. Proper keys: %s.' % allowed_keys)
