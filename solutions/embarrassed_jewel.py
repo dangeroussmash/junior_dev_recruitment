@@ -86,7 +86,7 @@ class Client(object):
 ##############
 
 def iterate_over_list(some_list):
-    return [j * i if isinstance(j, str) else int(i) + j
+    return [j * i if isinstance(j, str) else i + int(j)
             for i, j in enumerate(some_list)]
 
 
