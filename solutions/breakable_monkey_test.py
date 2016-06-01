@@ -1,6 +1,8 @@
 import datetime, json, unittest
 from breakable_monkey import Client, Ticket, iterate_over_list
 
+# WHOA! First PR with tests: +1 point
+
 # I didn't go deep with tests and I coverd only basic cases
 class ClientTest(unittest.TestCase):
 
