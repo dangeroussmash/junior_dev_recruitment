@@ -39,7 +39,7 @@ class Ticket(object):
             "event_date":  self.event_date,
             "client":      self.client.get_client_data(json_format=False)
         }
-        return json.dumps(data) if json else data
+        return json.dumps(data) if json_format else data
 
 
 class Client(object):
@@ -56,9 +56,9 @@ class Client(object):
             'first_name': self.first_name,
             'last_name':  self.last_name,
             'birth_date': self.birth_date,
-            'sex': self.sex
+            'sex':        self.sex
         }
-        return json.dumps(data) if json else data
+        return json.dumps(data) if json_format else data
 
     def add_ticket(self, ticket_id):
         self.bought_tickets.add(ticket_id)
@@ -66,10 +66,13 @@ class Client(object):
     def get_ticket_ids(self):
         return self.bought_tickets
 
+    def get_age(self):
+        birth_date = datetime.strptime(self.birth_date, '%Y-%m-%d')
+        return dates_difference(date.today(), birth_date)
+
     def can_watch_pegi(self, mark):
         assert mark in [3, 7, 12, 16, 18]  # assert the argument is a PEGI mark
-        birth_date = datetime.strptime(self.birth_date, '%Y-%m-%d')
-        return dates_difference(date.today(), birth_date).years >= mark
+        return self.get_age().years >= mark
 
 
 # SUBTASK 2
@@ -90,7 +93,7 @@ class Client(object):
 # all ticket ids - whenever added, which returns all ticket ids;
 
 
-class ClientTests(unittest.TestCase):
+class Task1Tests(unittest.TestCase):
     def test_ticket_data_storing(self):
         client = Client('fname', 'lname', '1994-03-11', 'male')
         ticket1 = Ticket('12345678', '2016-06-05', '19:00',
@@ -110,6 +113,27 @@ class ClientTests(unittest.TestCase):
         self.assertFalse(client.can_watch_pegi(16))
         self.assertFalse(client.can_watch_pegi(18))
 
+    def test_json_serializing(self):
+        client = Client('fname', 'lname', '1985-11-05', 'male')
+        ticket = Ticket('7821471', '2016-08-31', "12:00",
+                        'example event', client, '3')
+
+        serialized_data = ticket.get_ticket_data()
+        valid_data = [
+            '"event_name": "{}"'.format(ticket.event_name),
+            '"last_name": "{}"'.format(client.last_name)
+        ]
+        invalid_data = [
+            '"tic_id": "{}"'.format(ticket.ticket_id),
+            '"sex": "{}"'.format(client.first_name)
+        ]
+
+        for item in valid_data:
+            self.assertTrue(item in serialized_data)
+
+        for item in invalid_data:
+            self.assertTrue(item not in serialized_data)
+
 
 ##############
 #   TASK 2   #
@@ -125,7 +149,7 @@ def iterate_over_list(some_list):
     if any(type(s) == str for s in some_list):
         return [x * index for x, index in enumerate(some_list)]
     else:
-        return [x + i for x, i in enumerate(some_list)]
+        return [x + index for x, index in enumerate(some_list)]
 
 # SUBTASK 2
 # and how handle this?
@@ -140,12 +164,16 @@ class Task2Tests(unittest.TestCase):
     def test_strings(self):
         self.assertEqual(iterate_over_list(['a', 'b', 'c']), ['', 'b', 'cc'])
 
+    def test_invalid_input(self):
+        with self.assertRaises(TypeError):
+            iterate_over_list([ [], (), {} ])
+
 
 ##############
 #   TASK 3   #
 ##############
 
-r"SELECT location_city, COUNT(*) FROM poi GROUP BY location_city"
+r"SELECT location_city, COUNT(1) FROM poi GROUP BY location_city"
 
 # SUBTASK 1
 
