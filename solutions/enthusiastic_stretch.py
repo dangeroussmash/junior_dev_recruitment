@@ -1,7 +1,7 @@
 from datetime import datetime
-import time
 import json
 from operator import itemgetter
+import time
 
 
 # TASK 1
@@ -21,11 +21,12 @@ class Ticket(object):
         self.event_name = event_name
         self.client = client
         self.room_number = room_number
-        self.whole = {'ticket_id': ticket_id,    # dictionary which contains every ticket's attribute
+        self.whole = {'ticket_id': int(ticket_id),    # dictionary which contains every ticket's attribute
+                      # ticket_id and room_number changes from str to int to make sorting easier
                       'event_name': event_name,
                       'event_time': event_time,
                       'event_date': event_date,
-                      'room_number': room_number}
+                      'room_number': int(room_number)}
         self.client.tickets.append(self.whole)  # automatically adds every created ticket to its clients tickets list
 
 # SUBTASK 2
@@ -54,7 +55,6 @@ class Client(object):
         self.tickets = []  # list which contains info about all clients tickets
 
 # SUBTASK 3
-    # Method is expecting birth_date as string in format: YYYY-MM-DD.
     def can_watch_pegi(self, pegi):
         correct_pegi_list = [3, 7, 12, 16, 18]
         birth_date_as_date = time.strptime(self.birth_date, "%Y-%m-%d")  # reformats birthday string to more explicit
@@ -70,17 +70,29 @@ class Client(object):
             raise ValueError('Wrong PEGI')
 
 # SUBTASK 4
-    # Method allows to order result by every ticket's attribute(key), default order is set to ticket_id
-    def my_tickets(self, key='ticket_id'):
-        allowed_keys = ['ticket_id', 'event_name', 'event_date', 'event_time', 'room_number']
-        if key in allowed_keys:  # checks if given key is ticket's attribute
-            sort_list = sorted(self.tickets, key=itemgetter(key))  # creates a list sorted by value of a given key
+
+    def by_ticket_id(self, argument='ticket_id'):
+        arguments_list = ['ticket_id', 'event_name', 'event_date', 'event_time', 'room_number']
+        if argument in arguments_list:
+            sort_list = sorted(self.tickets, key=itemgetter(argument))
             newlist = []
             for i in sort_list:
-                newlist.append(i.get('ticket_id'))  # output list contains only ticket_id value
-            return 'Ticket IDs ordered by %s : %s. \nList of available keys: %s' % (key, newlist, allowed_keys)
+                newlist.append(str(i.get('ticket_id')))  # output list contains only ticket_id value as string
+            return newlist
         else:
             raise ValueError('Key not allowed. Proper keys: %s.' % allowed_keys)
+
+    def by_event_name(self):
+        return self.by_ticket_id('event_name')
+
+    def by_event_date(self):
+        return self.by_ticket_id('event_date')
+
+    def by_event_time(self):
+        return self.by_ticket_id('event_time')
+
+    def by_room_number(self):
+        return self.by_ticket_id('room_number')
 
 
 # TASK 2
