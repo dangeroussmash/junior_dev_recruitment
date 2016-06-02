@@ -3,8 +3,9 @@
 import unittest
 from datetime import date, datetime
 from dateutil import relativedelta
-dates_difference = relativedelta.relativedelta
 import json
+import re
+dates_difference = relativedelta.relativedelta
 
 ##############
 #   TASK 1   #
@@ -21,11 +22,17 @@ class Ticket(object):
         client,       # the INSTANCE of the client;
         room_number,  # the room number in which event happens;
     ):
+        assert ticket_id.isnumeric()  # check if contains only numbers
         self.ticket_id = ticket_id
+        assert re.match(r'(\d){4}-[0-1][0-9]-[0-3][0-9]', event_date)
         self.event_date = event_date
+        assert isinstance(event_time, str)
         self.event_time = event_time
+        assert isinstance(event_name, str)
         self.event_name = event_name
+        assert isinstance(client, Client)
         self.client = client
+        assert room_number.isnumeric()
         self.room_number = room_number
 
         self.client.add_ticket(self.ticket_id)
@@ -44,11 +51,16 @@ class Ticket(object):
 
 class Client(object):
     def __init__(self, first_name, last_name, birth_date, sex):
+        assert first_name.isalpha()  # check if contains only letters
         self.first_name = first_name
+        assert last_name.isalpha()
         self.last_name = last_name
+        assert re.match(r'(\d){4}-[0-1][0-9]-[0-3][0-9]', birth_date)
         self.birth_date = birth_date
+        assert sex in ['male', 'female']
         self.sex = sex
 
+        # thanks to that it is a set tickets will be kept unique and sorted
         self.bought_tickets = set()
 
     def get_client_data(self, *, json_format=True):
@@ -61,6 +73,7 @@ class Client(object):
         return json.dumps(data) if json_format else data
 
     def add_ticket(self, ticket_id):
+        assert ticket_id.isnumeric()
         self.bought_tickets.add(ticket_id)
 
     def get_ticket_ids(self):
@@ -74,6 +87,9 @@ class Client(object):
         assert mark in [3, 7, 12, 16, 18]  # assert the argument is a PEGI mark
         return self.get_age().years >= mark
 
+# SUBTASK 1
+# Define the Client class with attributes:
+# first_name, last_name, birth_date, sex
 
 # SUBTASK 2
 # define a method on Ticket: get_ticket_data, which returns dumped JSON object
@@ -89,21 +105,18 @@ class Client(object):
 
 
 # SUBTASK 4
-# Propose a structure where client instance will have some interface to get the
+# Propose a structure where client instance will have some interface to get
 # all ticket ids - whenever added, which returns all ticket ids;
 
 
 class Task1Tests(unittest.TestCase):
     def test_ticket_data_storing(self):
         client = Client('fname', 'lname', '1994-03-11', 'male')
-        ticket1 = Ticket('12345678', '2016-06-05', '19:00',
-                         'example event', client, '6')
-        ticket2 = Ticket('8765431', '2016-06-05', '19:00',
-                         'example event', client, '6')
-        ticket3 = Ticket('12343141', '2016-06-05', '19:00',
-                         'example event', client, '6')
+        Ticket('12345678', '2016-06-05', '19:00', 'example event', client, '6')
+        Ticket('87654313', '2016-06-05', '19:00', 'example event', client, '6')
+        Ticket('12343141', '2016-06-05', '19:00', 'example event', client, '6')
 
-        self.assertEqual({'12345678', '8765431', '12343141'},
+        self.assertEqual({'12345678', '87654313', '12343141'},
                          client.get_ticket_ids())
 
     def test_pegi_marks(self):
@@ -134,6 +147,24 @@ class Task1Tests(unittest.TestCase):
         for item in invalid_data:
             self.assertTrue(item not in serialized_data)
 
+    def test_date_validation(self):
+        with self.assertRaises(AssertionError):
+            client = Client('f', 'l', '1961-03-15', 'female')
+            Ticket('1', '2016-99-11', '12:00', 'event', client, '15')
+        with self.assertRaises(AssertionError):
+            Client('f', 'l', '966-03-15', 'male')
+
+    def test_data_validation(self):
+        with self.assertRaises(AssertionError):
+            Client('34343', 'fname', '1961-03-15', 'female')
+        with self.assertRaises(AssertionError):
+            Client('f', 'l', '1961-03-15', 'cat')
+        client = Client('f', 'l', '1961-03-15', 'female')
+        with self.assertRaises(AssertionError):
+            Ticket('id', '2016-08-01', '5 pm', 'event', client, '5')
+        with self.assertRaises(AssertionError):
+            Ticket('56464', '2016-08-01', '5 pm', 'event', object(), '5')
+
 
 ##############
 #   TASK 2   #
@@ -142,7 +173,7 @@ class Task1Tests(unittest.TestCase):
 # SUBTASK 1
 # do it in pythonic way;
 # it just adds the index to the list element on this index
-# and return a new list;
+# and returns a new list;
 # TIP: shorter is better;
 
 def iterate_over_list(some_list):
