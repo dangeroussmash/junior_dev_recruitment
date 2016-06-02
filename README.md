@@ -4,7 +4,7 @@
 
 # INFO
 
-Each one of you will get an email or facebook meessage with your unique ID. This IS is important.
+Each one of you will get an email or facebook meessage with your unique ID. This IS important.
 
 Probably you didn't have so amazing recruitment experience ever :) But I must do this that way, because, there's 
 twenty five of you. So I need to put minimum effort in this recruitment process. I've decided not to reject a single 
