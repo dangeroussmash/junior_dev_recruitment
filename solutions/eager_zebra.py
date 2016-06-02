@@ -72,6 +72,9 @@ class Client(object):
         }
         return json.dumps(data) if json_format else data
 
+    # other classes shouldn't know Client class inner implementation
+    # that's why you should use this method instead of just calling
+    # client.bought_tickets.append(ticket)
     def add_ticket(self, ticket_id):
         assert ticket_id.isnumeric()
         self.bought_tickets.add(ticket_id)
@@ -95,14 +98,12 @@ class Client(object):
 # define a method on Ticket: get_ticket_data, which returns dumped JSON object
 # with all data on ticket, and all data on client;
 
-
 # SUBTASK 3
 # Write a method (name: can_watch_pegi ;)) on client which check if he is able
 # to watch the movie - according to PEGI
 # assume following age marks: 3, 7, 12, 16, 18;
 # Method should return True or False -> True means that client is older than
 # restriction and can watch the movie;
-
 
 # SUBTASK 4
 # Propose a structure where client instance will have some interface to get
@@ -125,6 +126,8 @@ class Task1Tests(unittest.TestCase):
         self.assertTrue(client.can_watch_pegi(12))
         self.assertFalse(client.can_watch_pegi(16))
         self.assertFalse(client.can_watch_pegi(18))
+        with self.assertRaises(AssertionError):
+            client.can_watch_pegi(99)
 
     def test_json_serializing(self):
         client = Client('fname', 'lname', '1985-11-05', 'male')
@@ -147,18 +150,19 @@ class Task1Tests(unittest.TestCase):
         for item in invalid_data:
             self.assertTrue(item not in serialized_data)
 
-    def test_date_validation(self):
-        with self.assertRaises(AssertionError):
-            client = Client('f', 'l', '1961-03-15', 'female')
-            Ticket('1', '2016-99-11', '12:00', 'event', client, '15')
+    def test_client_constructor_data_validation(self):
         with self.assertRaises(AssertionError):
             Client('f', 'l', '966-03-15', 'male')
-
-    def test_data_validation(self):
         with self.assertRaises(AssertionError):
             Client('34343', 'fname', '1961-03-15', 'female')
         with self.assertRaises(AssertionError):
             Client('f', 'l', '1961-03-15', 'cat')
+
+    def test_ticket_constructor_data_validation(self):
+        with self.assertRaises(AssertionError):
+            client = Client('f', 'l', '1961-03-15', 'female')
+            Ticket('1', '2016-99-11', '12:00', 'event', client, '15')
+
         client = Client('f', 'l', '1961-03-15', 'female')
         with self.assertRaises(AssertionError):
             Ticket('id', '2016-08-01', '5 pm', 'event', client, '5')
@@ -204,7 +208,8 @@ class Task2Tests(unittest.TestCase):
 #   TASK 3   #
 ##############
 
-r"SELECT location_city, COUNT(1) FROM poi GROUP BY location_city"
+r'''SELECT location_city AS City, COUNT(1) AS Points
+    FROM poi GROUP BY location_city'''
 
 # SUBTASK 1
 
