@@ -22,6 +22,7 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(['8', '4', '2', '12'], client.by_room_number())
 
+
         with self.assertRaises(NameError):
             client.by_ticket_id(wrongvalue)
 
