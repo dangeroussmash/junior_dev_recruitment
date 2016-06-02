@@ -22,6 +22,9 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(['8', '4', '2', '12'], client.by_room_number())
 
+        with self.assertRaises(NameError):
+            client.by_ticket_id(wrongvalue)
+
     def test_can_watch_pegi(self):
         client = Client('Tony', 'Stark', '2000-01-01', 'M')
         self.assertTrue(client.can_watch_pegi(7))
