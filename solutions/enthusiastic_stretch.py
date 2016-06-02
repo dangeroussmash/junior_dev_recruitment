@@ -1,6 +1,7 @@
 from datetime import datetime
 import json
 from operator import itemgetter
+import time
 
 
 # TASK 1
@@ -54,14 +55,13 @@ class Client(object):
         self.tickets = []  # list which contains info about all clients tickets
 
 # SUBTASK 3
-    def can_watch_pegi(birth_date, pegi):
+    def can_watch_pegi(self, pegi):
         correct_pegi_list = [3, 7, 12, 16, 18]
+        birth_date_as_date = time.strptime(self.birth_date, "%Y-%m-%d")  # reformats birthday string to more explicit
         today = datetime.today()
-        if type(birth_date) == datetime:
-            age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
-        else:
-            raise ValueError('Wrong birth_date format')
         if pegi in correct_pegi_list:  # checks if given pegi value is correct
+            age = today.year - birth_date_as_date.tm_year - \
+                    ((today.month, today.day) < (birth_date_as_date.tm_mon, birth_date_as_date.tm_mday))
             if age == pegi or age > pegi:
                 return True
             else:
