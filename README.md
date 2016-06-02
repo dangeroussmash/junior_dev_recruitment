@@ -4,14 +4,14 @@
 
 # INFO
 
-Each one of you will get an email or facebook meessage with your unique ID. This IS is important.
+Each one of you will get an email or facebook meessage with your unique ID. This IS important.
 
 Probably you didn't have so amazing recruitment experience ever :) But I must do this that way, because, there's 
 twenty five of you. So I need to put minimum effort in this recruitment process. I've decided not to reject a single 
 application on the first (CV) level.
 
 At junior level - you can be overwhelmed a little bit with this README and tasks :) But do not worry - Just do, there's 
-not try. And I think that if you're smart guy or lady - you really can resolve all this - including the learing 
+no try. And I think that if you're smart guy or lady - you really can resolve all this - including the learing 
 of how to make git pull request in the given time;
 
 (this QR code on img is meaningless - really ;) )
